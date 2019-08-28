@@ -1,3 +1,3 @@
 # H2019
 
-Teaching material for semester H2019
+This project contains teaching material for semester H2019 for DAT300.
