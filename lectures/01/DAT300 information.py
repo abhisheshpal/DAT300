@@ -70,6 +70,10 @@
 #     - Available in Boksmia
 #     - .. or https://www.akademika.no/python-machine-learning/raschka-sebastian/mirjalili-vahid/9781787125933
 #     - .. or https://www.packtpub.com/big-data-and-business-intelligence/python-machine-learning-second-edition (also 3rd edition)
+# - Material from Machine learning with Python, By Chollet: https://www.manning.com/books/deep-learning-with-python
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# <img src="./images/Timetable.png" alt="Time table" style="width: 1000px;"/> 
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # <img src="./images/TentativePlan_2019.png" alt="Tentative plan" style="width: 1032px;"/>

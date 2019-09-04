@@ -45,9 +45,6 @@
 #     - Various ways of uploading files in API
 # <img src="./images/Drive.png" alt="Google Drive" style="width: 300px;"/>
 
-# + {"slideshow": {"slide_type": "slide"}}
-example, git to drive, open from there
-
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # # Kaggle integration
 # - Datasets download

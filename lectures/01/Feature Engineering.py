@@ -494,6 +494,11 @@ print(df.head())
 # - combinations of the above
 # - aggregation of aggregations (depth = 2, deep feature), and deeper (harder to interpret)
 
+# + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
+# # -------------------------------------
+# # TODO: Update from here!
+# # -------------------------------------
+
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Example
 # #### Prediction of olympic medals
@@ -694,3 +699,9 @@ print(PolynomialFeatures(2).fit_transform(someData))
 # - Inspect class-wise
 # - Run clustering on errors to search for common patterns
 # - Ask a colleague or expert
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown", "endofcell": "--"}
+# ## Summary
+# - 
+# - 
+# --
