@@ -18,16 +18,29 @@
 # # DAT300
 
 # + {"slideshow": {"slide_type": "-"}, "cell_type": "markdown"}
-# <img src="./images/DAT300_H2019.jpg" alt="DAT300" style="width: 736px;"/>
+# <center><img src="./images/DAT300_H2019.jpg" alt="DAT300" style="width: 736px;"/></center>
 
 # + {"slideshow": {"slide_type": "-"}, "cell_type": "markdown"}
 # - We are being watched (recorded)
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# # Plan for September 5th
+# - Master project teaser by Jon Nordby
+# - Introduction to:
+#   - People involved
+#   - Resources and tools
+#   - Book(s)
+#   - Lesson plan
+# - Introduction and hands on with Google Colab' and Kaggle API
+# - Feature enineering
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # # The men
-# - Kristian Hovde Liland
-# - Oliver Tomic  
-#   
+#
+# | Oliver Tomic | Kristian Hovde Liland |  
+# |:-------------------------|----------:|  
+# | <img src="./images/Oliver.jpg" alt="Oliver" style="height: 250px;"/> | <img src="./images/Kristian.jpg" alt="Kristian" style="height: 220px;"/>    |  
+#     
 # Associate Professors in Data Science.
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -44,11 +57,11 @@
 #   - Information hub
 #   - Compulsory assignments
 # - GitLab: https://gitlab.com/nmbu.no/emner/DAT300/h2019  
-#   - Git source for lectures and exercises  
+#   - Git source for lectures and exercises (please register)  
 # - Google Colaboratory: https://colab.research.google.com  
-#   - Online processing
+#   - Online processing (please register)
 # - Kaggle: https://www.kaggle.com/
-#   - Compulsory assignments, competitions and solutions
+#   - Compulsory assignments, competitions and solutions (please register)
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## The tools
@@ -73,13 +86,10 @@
 # - Material from Machine learning with Python, By Chollet: https://www.manning.com/books/deep-learning-with-python
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# <img src="./images/Timetable.png" alt="Time table" style="width: 1000px;"/> 
+# <center><img src="./images/Timetable.png" alt="Time table" style="width: 1400px;"/> </center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# <img src="./images/TentativePlan_2019.png" alt="Tentative plan" style="width: 1032px;"/>
-
-# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
-# <img src="./images/MarkZuckerberg.jpg" alt="Ethics" style="width: 720px;"/>
+# <center><img src="./images/TentativePlan_2019.png" alt="Tentative plan" style="width: 1032px;"/></center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Expected student background
@@ -95,3 +105,6 @@
 # - Chapter 7 – Combining Different Models for Ensemble Learning
 # - Chapter 10 – Predicting Continous Target Variables with Regression Analysis
 # - Chapter 11 – Working with unlabelled data – Clustering Analysis
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# <center><img src="./images/MarkZuckerberg.jpg" alt="Ethics" style="width: 650px;"/></center>
