@@ -73,7 +73,7 @@
 # - Jupytext: https://towardsdatascience.com/introducing-jupytext-9234fdff6c57
 #   - Jupyter Notebook extension for dual editing - Python code and Jupyter Notebook
 # - RISE slideshow: https://github.com/damianavila/RISE
-#   - Jupyter Notebook extension for presentation mode
+#   - Jupyter Notebook extension for presentation mode!
 #
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -83,7 +83,7 @@
 #     - Available in Boksmia
 #     - .. or https://www.akademika.no/python-machine-learning/raschka-sebastian/mirjalili-vahid/9781787125933
 #     - .. or https://www.packtpub.com/big-data-and-business-intelligence/python-machine-learning-second-edition (also 3rd edition)
-# - Material from Machine learning with Python, By Chollet: https://www.manning.com/books/deep-learning-with-python
+# - Material from Deep learning with Python, By Chollet: https://www.manning.com/books/deep-learning-with-python
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # <center><img src="./images/Timetable.png" alt="Time table" style="width: 1400px;"/> </center>

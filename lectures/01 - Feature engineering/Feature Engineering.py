@@ -15,7 +15,7 @@
 
 # + {"hide_input": true, "slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # # Feature Engineering
-# <img src="./images/Engineering.jpg" alt="Engineering" style="width: 800px;"/>
+# <center><img src="./images/Engineering.jpg" alt="Engineering" style="width: 800px;"/></center>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Feature engineering is the process of using domain knowledge of the data to create features that make machine learning algorithms work.
@@ -32,7 +32,7 @@
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Example: Kaggle competiton/tutorial - Titanic survival
-# - 3rd compulsory assignment in DAT200
+# - Has been compulsory assignment in DAT200
 # - Few complete features, missing data
 # - Some information needs decoding, e.g. titles from names
 # - Combining features smartly wastly increases accuracy
@@ -79,6 +79,7 @@ plt.show()
 #   - Combinations that cannot be represented by the linear system, e.g. ReLU and friends.
 # - Feature bucketing
 #   - Create major categories from continuous or multi class data.
+#   - https://scikit-learn.org/stable/auto_examples/preprocessing/plot_discretization.html -> Colab
 # - Feature templates
 #   - Implicit generation of new features in a model, or
 #   - A group of features all computed in a similar way.
@@ -700,7 +701,7 @@ print(PolynomialFeatures(2).fit_transform(someData))
 # - Run clustering on errors to search for common patterns
 # - Ask a colleague or expert
 
-# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown", "endofcell": "--"}
+# + {"slideshow": {"slide_type": "slide"}, "endofcell": "--", "cell_type": "markdown"}
 # ## Summary
 # - 
 # - 
