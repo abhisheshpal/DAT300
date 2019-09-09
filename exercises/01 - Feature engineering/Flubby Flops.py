@@ -25,9 +25,10 @@ Updated 2019.09.05
  your days at the university with regard to deriving new features, 
  recoding, transforming, and making interactions. ++
  
- Use the full dataset to predict the response (ordinary linear regression
- should suffice, but other tools may work). Apply your feature engineering
- tools and try to achieve predictions that are less than 10^-4 off target.
+ Use the full dataset to predict the response, i.e. no validation or hold-out
+ for this exercise (ordinary linear regression should suffice, but other tools 
+ may work). Apply your feature engineering tools and try to achieve predictions
+ that are less than 10^-3 off target.
  During the exploration, visualise and ponder on the attributes of the
  available features.
  
