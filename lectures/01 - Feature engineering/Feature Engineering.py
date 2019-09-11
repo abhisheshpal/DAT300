@@ -138,6 +138,15 @@ Assume the following (only integers):
 eduLength = [3,5,1,3,6,7,4,2,6,8,9,4,2,6,9]
 degrees = {'Course shopper':1, 'Bachelor':3, 'Master':5, 'Ph.D.':8, 'Overtime':13}
 
+# Teacher's solution will include Pandas' cut, i.e. pd.cut()
+import pandas as pd
+def yearDegreePD(years, degrees):
+    return(pd.cut(years, 
+                  list(degrees.values()), 
+                  right=False, 
+                  labels=list(degrees.keys())[:-1]).get_values())
+yearDegreePD(eduLength, degrees)
+
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### External data
 # - Time series:
@@ -482,6 +491,8 @@ print('Double augmented data: {0:.3f}'.format(accuracy_aug2))
 
 # + {"slideshow": {"slide_type": "fragment"}}
 ## Custom bucketing
+import pandas as pd
+import numpy as np
 df = pd.DataFrame({'normal': np.random.normal(10, 3, 1000)})
 print(df.describe().T); print()
 
