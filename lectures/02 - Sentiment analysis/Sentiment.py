@@ -16,8 +16,9 @@
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # # Chapter 8 - Applying Machine Learning To Sentiment Analysis
+# <center><img src="./images/sentiment.png" alt="Sentiment analysis" style="width: 400px;"/></center>
 
-# + {"slideshow": {"slide_type": "-"}, "cell_type": "markdown"}
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Overview
 
 # + {"slideshow": {"slide_type": "-"}, "cell_type": "markdown"}
@@ -68,7 +69,7 @@
 #
 # 0) Use the code in the following cells to retreive and extact automatically.
 #
-# A) If you are working with Linux or MacOS X, open a new terminal windowm `cd` into the download directory and execute 
+# A) If you are working with Linux or MacOS X, open a new terminal window `cd` into the download directory and execute 
 #
 # `tar -zxf aclImdb_v1.tar.gz`
 #
@@ -104,7 +105,7 @@ def reporthook(count, block_size, total_size):
     sys.stdout.flush()
 
 
-# + {"slideshow": {"slide_type": "fragment"}}
+# + {"slideshow": {"slide_type": "slide"}}
 # This download takes a couple of seconds at NMBU (<30)
 if not os.path.isdir('aclImdb') and not os.path.isfile('aclImdb_v1.tar.gz'):
     
@@ -439,7 +440,9 @@ y_train = df.loc[:25000, 'sentiment'].values
 X_test = df.loc[25000:, 'review'].values
 y_test = df.loc[25000:, 'sentiment'].values
 
-# + {"slideshow": {"slide_type": "slide"}}
+# + {"slideshow": {"slide_type": "skip"}}
+# This code worked in 2018.
+# Now the stop words are handled differently, hence a new version below.
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -474,10 +477,68 @@ gs_lr_tfidf = GridSearchCV(lr_tfidf, param_grid,
                            verbose=2,
                            n_jobs=1) # Number of jobs different from 1 sometimes crashes on Windows.
 
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Tokenizing of stop words
+# - In the newest scikit-learn (as of 2019.09.12), stop words need to be preprocessed before entering the TfidfVectorizer
+
+# + {"slideshow": {"slide_type": "-"}}
+stops = []
+for s in stop:
+    stops.append(tokenizer(s)[0])
+stopsPorter = []
+for s in stop:
+    stopsPorter.append(tokenizer_porter(s)[0])
+
 # + {"slideshow": {"slide_type": "slide"}}
-# The fitting of 2*2*2*3*5*2 models takes around 30-60 minutes to fit.
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import GridSearchCV
+
+# TfidfVectorizer combines CountVectorizer and TfidTransformer with a single function.
+tfidf = TfidfVectorizer(strip_accents=None, # Already preprocessed
+                        lowercase=False,
+                        preprocessor=None)
+
+param_grid = [{'vect__ngram_range': [(1, 1)],
+               'vect__stop_words': [stops, None], # Not this time, but use idf with normalization
+               'vect__tokenizer': [tokenizer],
+               'clf__penalty': ['l1', 'l2'],
+               'clf__C': [1.0, 10.0, 100.0]},
+              {'vect__ngram_range': [(1, 1)],
+               'vect__stop_words': [stops, None], # Not this time
+               'vect__tokenizer': [tokenizer],
+               'vect__use_idf':[False],       # Raw counts without normalization 
+               'vect__norm':[None],           # --------------||----------------
+               'clf__penalty': ['l1', 'l2'],
+               'clf__C': [1.0, 10.0, 100.0]},
+             {'vect__ngram_range': [(1, 1)],
+               'vect__stop_words': [stopsPorter, None], # Not this time, but use idf with normalization
+               'vect__tokenizer': [tokenizer_porter],
+               'clf__penalty': ['l1', 'l2'],
+               'clf__C': [1.0, 10.0, 100.0]},
+              {'vect__ngram_range': [(1, 1)],
+               'vect__stop_words': [stopsPorter, None], # Not this time
+               'vect__tokenizer': [tokenizer_porter],
+               'vect__use_idf':[False],       # Raw counts without normalization 
+               'vect__norm':[None],           # --------------||----------------
+               'clf__penalty': ['l1', 'l2'],
+               'clf__C': [1.0, 10.0, 100.0]}]
+
+lr_tfidf = Pipeline([('vect', tfidf),
+                     ('clf', LogisticRegression(random_state=0, solver='saga'))])
+# Solver specified to silence warning and to enable l1 regularization
+
+gs_lr_tfidf = GridSearchCV(lr_tfidf, param_grid,
+                           scoring='accuracy',
+                           cv=5,
+                           verbose=2,
+                           n_jobs=1) # Number of jobs different from 1 sometimes crashes on Windows.
+
+# + {"slideshow": {"slide_type": "slide"}}
+# The fitting of 2*2*2*3*5*2 models took around 30-60 minutes to fit in 2018. In 2019 it takes several hours. :(.
 # Lowering the number of samples or parameters will make it quicker, but may reduce the performance greatly.
-# gs_lr_tfidf.fit(X_train, y_train)
+gs_lr_tfidf.fit(X_train, y_train)
 
 # + {"slideshow": {"slide_type": "fragment"}}
 # Pickle (store to disk) the Grid Search CV object
@@ -486,6 +547,8 @@ with open('gs_lr_tfidf.pickle', 'wb') as f:
     pickle.dump(gs_lr_tfidf, f, pickle.HIGHEST_PROTOCOL)
 
 # + {"slideshow": {"slide_type": "fragment"}}
+# To open an object that has been pickled, you need to import the object's dependencies and local functions
+import pickle
 with open('gs_lr_tfidf.pickle', 'rb') as f:
     gs_lr_tfidf = pickle.load(f)
 
