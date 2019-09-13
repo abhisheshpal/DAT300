@@ -118,7 +118,8 @@ if not os.path.isdir('aclImdb') and not os.path.isfile('aclImdb_v1.tar.gz'):
         urllib.request.urlretrieve(source, target, reporthook)
 
 # + {"slideshow": {"slide_type": "fragment"}}
-# The extraction can take several minutes as all 50,000 reviews are stored as separate text files (101,111 files). 
+# The extraction can take several minutes as all 50,000 reviews are stored as separate text files
+# (101,111 files). 
 # Extracting to a synced folder (Dropbox, Google Drive, OneDrive, ...) may slow the process further.
 if not os.path.isdir('aclImdb'):
 
@@ -568,16 +569,6 @@ print('Test Accuracy: %.3f' % clf.score(X_test, y_test))
 #     - Good performance on small datasets
 #     - Variants used for K-mer classifications of nucleotides
 
-# + {"slideshow": {"slide_type": "slide"}}
-"""
-# EXERCISE: Test Naïve Bayes
-   - Read dataframe
-   - Run preprocessing
-   - Use TfidfVectorizer with optimal choices from LR
-   - Apply (Gaussian) Naïve Bayes
-   - Check performance on test data
-"""
-
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # # Working with bigger data - online algorithms and out-of-core learning
 # - Large datasets require large resources
@@ -714,6 +705,11 @@ clf = clf.partial_fit(X_test, y_test)
 #     - Similar words in similar clusters
 # - Can reproduce certain words using vector math
 #     - Example: king - man + woman = queen
+
+# + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
+# -----------------
+# End of lecture 2019.09.12
+# -----------------
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Topic modeling
