@@ -149,6 +149,15 @@ plt.ylabel('petal length [cm]')
 plt.title('Adaline on Iris')
 plt.show()
 
+# + {"slideshow": {"slide_type": "slide"}}
+# Plotting the values of the cost function
+fig = plt.figure()
+plt.plot(ada.cost_)
+plt.xlabel('Epoch')
+plt.ylabel('Cost')
+plt.ylim([0,60])
+plt.show()
+
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Optimisation
 # - Gradient descent
@@ -165,7 +174,7 @@ def func(x):
     return x**2
 # n_sample=50, eta=0.1 is beautiful
 # n_sample=20, eta=0.01 struggles
-def SGD_Sequence_1D(function=func, start=1.0, n_sample=50, eta=0.1, n_updates=20):
+def SGD_Sequence_1D(function=func, start=1.0, n_sample=20, eta=0.01, n_updates=20):
     sequence = np.zeros([n_updates,1])
     values   = np.zeros([n_updates,2])
     current  = start
@@ -215,7 +224,7 @@ def SGD_plot(n_updates=10):
 
 from ipywidgets import interact
 import ipywidgets as widgets
-interact(SGD_plot, n_updates=widgets.IntSlider(min=2, max=20, step=1, value=2))
+interact(SGD_plot, n_updates=widgets.IntSlider(min=2, max=50, step=1, value=2))
 
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -290,7 +299,7 @@ interact(SGD_plot, n_updates=widgets.IntSlider(min=2, max=20, step=1, value=2))
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Compact notation
-# For easier readability and more efficient calculations we change from sum-notation to matrix notation. Collect all activation units of layer $l-1$ and all weights of for the transition to layer $l$ into matrices:  
+# For easier readability and more efficient calculations we change from sum-notation to matrix notation. Collect all activation units of layer $l-1$ and all weights for the transition to layer $l$ into matrices:  
 # $$\bf{Z}^\it{(l)} = \bf{A}^\it{(l-1)} \bf{W}^\it{(l)}$$
 #   
 # $$\bf{A}^\it{(l)} = \phi \left(\bf{Z}^\it{(l)} \right)$$
