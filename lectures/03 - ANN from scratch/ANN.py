@@ -105,7 +105,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import numpy as np
-from adaline import AdalineGD 
+from adalineB import AdalineGD               # New adaline which stores w-sequence
 from sklearn import datasets, preprocessing
 
 iris = datasets.load_iris()
@@ -156,6 +156,29 @@ plt.plot(ada.cost_)
 plt.xlabel('Epoch')
 plt.ylabel('Cost')
 plt.ylim([0,60])
+plt.show()
+
+# + {"slideshow": {"slide_type": "notes"}}
+# If you have stored the w sequence
+ada.W_
+
+# + {"slideshow": {"slide_type": "notes"}}
+# If you have stored the w sequence
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+mpl.rcParams['legend.fontsize'] = 10
+fig = plt.figure(figsize=[10,10])
+ax = fig.gca(projection='3d')
+W = np.array(ada.W_)
+x = W[:,0]
+y = W[:,1]
+z = ada.cost_
+ax.plot(x, y, z, label='cost path')
+ax.legend()
+plt.xlabel('weight for sepal length [cm]')
+plt.ylabel('weight for petal length [cm]')
+ax.view_init(30, 20) # Change these to rotate
 plt.show()
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -381,7 +404,7 @@ def load_mnist(path, kind='train'):
 
 
 # + {"slideshow": {"slide_type": "slide"}}
-# !ls data
+# # !ls data # Depends on runtime
 
 # + {"slideshow": {"slide_type": "fragment"}}
 X_train, y_train = load_mnist('data', kind='train')
@@ -420,6 +443,11 @@ for i in range(25):
 ax[0].set_xticks([]); ax[0].set_yticks([])
 plt.tight_layout()
 plt.show()
+
+# + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
+# ------------------
+# ## Stopped here 2019.09.18
+# ------------------
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Save data for later
@@ -542,7 +570,7 @@ class NeuralNetMLP(object):
 
         z_out = np.dot(a_h, self.w_out) + self.b_out
 
-        # step 4: activation output layer
+        # step 4: activation in output layer
         a_out = self._sigmoid(z_out)
 
         return z_h, a_h, z_out, a_out
@@ -662,9 +690,11 @@ class NeuralNetMLP(object):
                 # forward propagation
                 z_h, a_h, z_out, a_out = self._forward(X_train[batch_idx])
 
-                ##################
-                # Backpropagation
-                ##################
+                ###################
+                # Backpropagation #
+                ###################
+                # NB! Every sigma here is a small \delta in the text.
+                #     Every delta her is a capital \Delta in the text. 
 
                 # [n_samples, n_classlabels]
                 sigma_out = a_out - y_train_enc[batch_idx]
@@ -798,9 +828,10 @@ print('Test accuracy: %.2f%%' % (acc * 100))
 # - Frown at impossible tasks
 
 # + {"slideshow": {"slide_type": "slide"}}
-miscl_img = X_test[y_test != y_test_pred][:25]
+# Some misclassified images
+miscl_img   = X_test[y_test != y_test_pred][:25]
 correct_lab = y_test[y_test != y_test_pred][:25]
-miscl_lab = y_test_pred[y_test != y_test_pred][:25]
+miscl_lab   = y_test_pred[y_test != y_test_pred][:25]
 
 fig, ax = plt.subplots(nrows=5, ncols=5, sharex=True, sharey=True,)
 ax = ax.flatten()
@@ -813,7 +844,6 @@ ax[0].set_xticks([]); ax[0].set_yticks([])
 plt.tight_layout()
 plt.show()
 
-
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # # Training an artificial neural network
 
@@ -825,11 +855,21 @@ plt.show()
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Computing the logistic cost function
-# The implementation the used same logistic cost functions as Chapter 3 as a basis:
+# The implementation used the same logistic cost functions as Chapter 3 as a basis:
 # $$\it{J} (w) = -\sum_{i=1}^{n} y^{[i]} log(a^{[i]}) + \left( 1-y^{[i]}\right) log(1-a^{[i]})$$
 #   
 # ... where $a^{[i]}$ is output of a node for sample [i] in the output layer:
 # $$a^{[i]} = \phi(z^{[i]})$$
+
+# + {"slideshow": {"slide_type": "fragment"}}
+# Activations
+a = np.array([0.00001, 0.001, 0.01, 0.1, 0.5, 0.9, 0.99, 0.999, 0.99999])
+plt.plot(a, 1*np.log(a))
+plt.title('True positive')
+plt.xlabel('activation')
+plt.ylabel('cost (left-hand side)')
+plt.show()
+
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### L2 penalization
@@ -851,9 +891,10 @@ plt.show()
 # Adding the L2 norm penalization finally yields:  
 #   
 # $$\it{J} (w) = -\left[ \sum_{i=1}^{n}\sum_{j=1}^{t} y_j^{[i]} log(a_j^{[i]}) + \left( 1-y_j^{[i]}\right) log(1-a_j^{[i]}) \right] + \frac{\lambda}{2} \sum_{l=1}^{L-1}\sum_{i=1}^{u_l}\sum_{j=1}^{u_{l+1}}\left(w_{j,i}^{(l)}\right)^2$$
+# ($u_l$ is the number of units in a layer)
 
 # + {"slideshow": {"slide_type": "slide"}}
-def _compute_cost(self, y_enc, output):
+def _compute_cost(self, y_enc, output): # where y_enc = y and output = a
     L2_term = (self.l2 *
                (np.sum(self.w_h ** 2.) +
                 np.sum(self.w_out ** 2.)))
@@ -919,7 +960,7 @@ def predict(self, X):
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Error propagation
 # Backpropagation - propagate the error from right to left.  
-# Calculate the error vector (nxt): 
+# Calculate the error vector ($n \times t$): 
 # $$\delta^{(out)} = a^{(out)}-y.$$  
 #   
 # Calculate the error of the hidden layer by propagation, transforming the errors backwards through the network:
@@ -940,10 +981,10 @@ def predict(self, X):
 #   
 # $$ = \delta^{(out)}(W^{(out)})^T \odot (a^{(h)} \odot (1-a^{(h)}))$$  
 #   
-# ... where $\delta^{(out)}$ has dimensions (nxt), $W^{(out)}$ has dimensions (hxt) and $\delta^{(h)}$ has dimensions (nxh).  
+# ... where $\delta^{(out)}$ has dimensions ($n \times t$), $W^{(out)}$ has dimensions ($d \times t$) and $\delta^{(h)}$ has dimensions ($n \times d$).  
 # (sigma_h in the code)
 
-# + {"slideshow": {"slide_type": "slide"}}
+# + {"slideshow": {"slide_type": "fragment"}}
 def errors():
     sigma_out = a_out - y_train_enc[batch_idx]
 
@@ -959,8 +1000,8 @@ def errors():
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Derivative of the cost function
-# $$\frac{\partial}{\partial w_{i,j}^{(out)}} J(W) = a_j^{(h)}\delta_i^{(out)}$$
 # $$\frac{\partial}{\partial w_{i,j}^{(h)}} J(W) = a_j^{(in)}\delta_i^{(h)}$$
+# $$\frac{\partial}{\partial w_{i,j}^{(out)}} J(W) = a_j^{(h)}\delta_i^{(out)}$$
 
 # + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
 # ... in vectorized format with regularization terms:  
