@@ -561,6 +561,28 @@ print('CV Accuracy: %.3f' % gs_lr_tfidf.best_score_)
 clf = gs_lr_tfidf.best_estimator_
 print('Test Accuracy: %.3f' % clf.score(X_test, y_test))
 
+# + {"slideshow": {"slide_type": "slide"}}
+# Naïve Bayes
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from mlxtend.preprocessing import DenseTransformer
+tfidfOpt = TfidfVectorizer(strip_accents=None, # Already preprocessed
+                           lowercase=False,
+                           preprocessor=None,
+                           ngram_range=[1,1],
+                           stop_words=None,
+                           tokenizer=tokenizer_porter,
+                           max_features=1000)
+nb_tfidf = Pipeline([('vect', tfidfOpt),
+                    ('clf', MultinomialNB())])
+
+# + {"slideshow": {"slide_type": "fragment"}}
+nb_tfidf.fit(X_train, y_train)
+
+# + {"slideshow": {"slide_type": "fragment"}}
+nb_tfidf.score(X_test, y_test)
+
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Other options
 # - Our choices of preprocessing, counting, etc. were not tested in all possible variations

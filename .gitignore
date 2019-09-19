@@ -1,2 +1,3 @@
 .ipynb_checkpoints
 movie_data.csv
+__pycache__

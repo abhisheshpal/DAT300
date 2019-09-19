@@ -12,7 +12,9 @@ EXERCISE: Exchange Logistic regression with Naïve Bayes in sentiment analysis
    - Load the Pickled object (gs_lr_tfidf) from file
 (2) Find the optimal combination of text processing from this object.
 (3) Create a pipeline with the text processing steps, but add a 
-(Gaussian) Naïve Bayes model at the end instead of logistic regression.
+(Multinomial) Naïve Bayes model at the end instead of logistic regression.
+NB! You can increase the speed and reduce the memory usage by limiting the number
+of words in the vocabulary in the TfidfVectorizer, e.g. by max_features=1000.
    - Fit the model on the training data
    - Check performance on test data
 """
