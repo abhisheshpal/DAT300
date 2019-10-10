@@ -1,0 +1,16 @@
+* Patient medical record data for Pima Indians
+* Target: onset of diabetes within five years (onset of diabetes as 1, otherwise 0)
+
+Features in dataset
+-------------------
+
+1. Number of times pregnant.
+2. Plasma glucose concentration a 2 hours in an oral glucose tolerance test.
+3. Diastolic blood pressure (mm Hg).
+4. Triceps skin fold thickness (mm).
+5. 2-Hour serum insulin (mu U/ml).
+6. Body mass index.
+7. Diabetes pedigree function.
+8. Age (years).
+9. Class, onset of diabetes within five years.
+
