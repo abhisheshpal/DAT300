@@ -67,7 +67,7 @@ model.fit(X_train, y_train,
           epochs=150, 
           batch_size=10)
 
-#model.fit(X_train_std, y_train,  
+# model.fit(X_train_std, y_train,  
 #          epochs=150, 
 #          batch_size=10)
 
