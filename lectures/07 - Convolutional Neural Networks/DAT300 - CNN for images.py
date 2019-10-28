@@ -152,18 +152,22 @@ print('Conv1d Implementation: ',
 print('Numpy Results:         ', 
       np.convolve(x, w, mode='same'))
 
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# Mental arithmetic (aided by paper/computer if needed): Compute the 1st and 4th output manually with your neighbour.
+
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### The effects of 1D convolutional filters
 
 # + {"slideshow": {"slide_type": "-"}}
 import matplotlib.pyplot as plt
+import numpy as np
 x = [-2, -2, -2, -2, -2, -1, 1, 3, 4, 3, 1, -1, -2, -2, -2, -2, -2]
 
 plt.plot(x, label='x', lw=4); plt.plot(np.zeros(np.shape(x)), c='#000000')
 #w1 = [-1, -1, -1]; plt.plot(np.convolve(x, w1, mode='same'), label='w1', ls='--')
 #w2 = [1, 0.5, 1];    plt.plot(np.convolve(x, w2, mode='same'), label='w2', ls=':')
-#w3 = [-1, 0, 1];   plt.plot(np.convolve(x, w3, mode='same'), label='w3', ls='-.')
-#w4 = [1, 0, -1];   plt.plot(np.convolve(x, w4, mode='same'), label='w4')
+w3 = [-1, 0, 1];   plt.plot(np.convolve(x, w3, mode='same'), label='w3', ls='-.')
+w4 = [1, 0, -1];   plt.plot(np.convolve(x, w4, mode='same'), label='w4')
 plt.legend(); plt.ylim([-10.5, 10.5])
 plt.show()
 
@@ -223,10 +227,17 @@ print('Scipy Results:         \n',
 # ### Convolution filter applied to letter 'o'
 # <img src="./images/CNN_filter2D.png" alt="Sub-sampling" style="width: 700px;"/>
 # Response map borrowed from "Deep Learning with Python" (F. Chollet)
+# -
+
+# ## A note on implementation
+# - In practice filters are not flipped.
+#   - Tensorflow, PyTorch, ...
+# - Convolution -> Cross-correlation.
+# - Quicker computations, no side-effects for deep learning purposes.
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Convolution flow
-# Input: $n_1=5,n_2=5,depth=2$, Convolution $m_1=3,m_2=3, p=0, s=1, depth=3$ (3 filters)
+# Input: $n_1=5,n_2=5,input depth=2$, Convolution $m_1=3,m_2=3, p=0, s=1, output depth=3$ (3 filters)
 # <img src="./images/CNN_flow.png" alt="Sub-sampling" style="width: 700px;"/>
 # Flow borrowed from "Deep Learning with Python" (F. Chollet)
 
@@ -240,6 +251,16 @@ print('Scipy Results:         \n',
 
 # + {"slideshow": {"slide_type": "-"}, "cell_type": "markdown"}
 # <img src="./images/15_06.png" alt="Sub-sampling" style="width: 700px;"/>
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ### Alternative subsampling by convolution
+# $$o = \left \lfloor{\frac{n+2p-m}{s}}\right \rfloor +1 $$  
+# - $n$=input width (e.g. 100)
+# - $p$=padding
+# - $m$=filter size
+# - $s$=stride 
+#   
+# How could convolutions be used to output ~1/3 of the input size?
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # # Putting everything together to build a CNN 
@@ -313,6 +334,8 @@ print(img[100:102, 100:102, :])
 #     - Too large => over fit, perfect learning - bad prediction
 # - One strategy: overfit sligthly, then regularize
 #     - L2 regularization
+#     - Norm constraint on weights (e.g. kernel_constraint=maxnorm(4))
+#     - Add Gaussian noise to weights
 #     - Droput
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
@@ -326,6 +349,21 @@ print(img[100:102, 100:102, :])
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # <img src="./images/15_08.png" alt="Dropout" style="width: 800px;"/>
+
+# + {"slideshow": {"slide_type": "fragment"}, "cell_type": "markdown"}
+# Filter-wise dropout of convolutions are possible in some implementations.
+
+# + {"slideshow": {"slide_type": "notes"}, "cell_type": "markdown"}
+# ---> Ended here Monday 21.10
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Why image classification is difficult
+# <img src="./images/Difficult1.jpg" alt="Difficult 1" style="width: 500px;"/>
+# <img src="./images/Difficult2.jpg" alt="Difficult 2" style="width: 500px;"/>
+
+# + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
+# ## Traditional pre-processing
+# <img src="./images/Trad_preprocessing.jpg" alt="Traditional preprocessing" style="width: 800px;"/>
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ## Implementing a deep convolutional neural network using Keras
@@ -454,11 +492,12 @@ model.add(Dense(1024, activation='relu'))
 model.add(Dropout(.5))
 model.add(Dense(10, activation='softmax'))
 model.summary()
-# -
 
+# + {"slideshow": {"slide_type": "notes"}}
 # Requires installation of graphViz
 import pydot
 
+# + {"slideshow": {"slide_type": "notes"}}
 # #!pip install pydot
 from keras.utils import plot_model
 plot_model(model, to_file="mod_plot.png")
@@ -764,7 +803,7 @@ plt.imshow(np.squeeze(results))
 #     - Agument training set
 
 # + {"slideshow": {"slide_type": "-"}}
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 datagen = ImageDataGenerator(width_shift_range=0.2,
                             height_shift_range=0.2,
                             zoom_range=0.2,
@@ -775,6 +814,7 @@ datagen.fit(X_train_centered)
 train_generator = datagen.flow(np.array(X_train_centered), np.array(Y_train), 
                                batch_size=64)
 # flow_from_directory for direct import from image files (can include resizing)
+# flow_from_dataframe for direct import based on a list of file names (numbering counted alphabetically)
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Applying the image generator
@@ -817,11 +857,11 @@ historyFlow = model.fit_generator(
 # ### Let's test one before theorizing
 
 # + {"slideshow": {"slide_type": "-"}}
-from keras.applications import InceptionV3
+from tensorflow.keras.applications import InceptionV3
 
 conv_base = InceptionV3(weights='imagenet', # Pre-trained on ImageNet data
                   include_top=False,        # Remove classification layer
-                  input_shape=(84, 84, 3))  # IncpetionV3 requires at least 75x75 RGB
+                  input_shape=(28*3, 28*3, 1*3))  # IncpetionV3 requires at least 75x75 RGB
 for layer in conv_base.layers:
     layer.trainable = False
 conv_base.summary()
@@ -830,9 +870,9 @@ conv_base.summary()
 # ### Expand network
 
 # + {"slideshow": {"slide_type": "-"}}
-from keras.models import Sequential
-from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout
-from keras import Model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout
+from tensorflow.keras import Model
 
 base_out = conv_base.output
 base_out = Flatten()(base_out)
@@ -849,7 +889,7 @@ InceptionV3_model.compile(optimizer='adam',
 # ### Update data generator with new size
 
 # + {"slideshow": {"slide_type": "-"}}
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 datagen = ImageDataGenerator(width_shift_range=0.2,
                             height_shift_range=0.2,
                             zoom_range=0.2,
@@ -862,6 +902,7 @@ train_generator = datagen.flow(np.array(X_train_centered.repeat(3,1).repeat(3,2)
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Train InceptionV3 on MNIST
+# ~ 1h 30m on teacher's notebook
 
 # + {"slideshow": {"slide_type": "-"}}
 historyFlowInceptionV3 = InceptionV3_model.fit_generator(
@@ -885,8 +926,8 @@ historyFlowInceptionV3 = InceptionV3_model.fit_generator(
 # ### Keras' Functional API
 
 # + {"slideshow": {"slide_type": "-"}}
-from keras.layers import Input, Dense
-from keras.models import Model
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.models import Model
 
 # This returns a tensor
 inputs = Input(shape=(784,)) # , dtype='int32', name='main_input')
@@ -911,7 +952,7 @@ model.compile(optimizer='rmsprop',
 
 # + {"slideshow": {"slide_type": "slide"}}
 # Add a shortcut/residual to a network (ResNet)
-from keras.layers import ReLU, Add
+from tensorflow.keras.layers import ReLU, Add
 
 inputs = Input(shape=(784,))
 
@@ -938,7 +979,7 @@ predictions = Dense(10, activation='softmax')(x)
 # <img src="./images/Inception_cell.png" alt="Inception cell" style="width: 600px;"/>
 
 # + {"slideshow": {"slide_type": "slide"}}
-from keras.layers import Conv2D, MaxPooling2D, Concatenate
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Concatenate
 
 def inception_cell(x):
     # 1x1 convolution
@@ -1001,7 +1042,7 @@ def Conv2D_stack_n_1(x, n):
 # - Not fully understood why it has a positive effect.
 
 # + {"slideshow": {"slide_type": "-"}}
-from keras.layers import BatchNormalization
+from tensorflow.keras.layers import BatchNormalization
 
 inputs = Input(shape=(28,28,1))
 
