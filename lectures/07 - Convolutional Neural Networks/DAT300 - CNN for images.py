@@ -7,7 +7,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.4'
-#       jupytext_version: 1.2.4
+#       jupytext_version: 1.2.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -317,7 +317,7 @@ print(img[100:102, 100:102, :])
 
 # + {"slideshow": {"slide_type": "slide"}, "cell_type": "markdown"}
 # ### Dropout
-# - Randomly drop hidden units of higher levels, e.g with $p_{drop}=0.5$, when training
+# - Randomly drop hidden units of higher levels (means last node of hidden layers), e.g with $p_{drop}=0.5$, when training
 #     - Activations must be scaled to compensate for dropout
 # - Forces the network to learn a redundant representation of the data
 #     - More general and robust as units may be dropped at any time
